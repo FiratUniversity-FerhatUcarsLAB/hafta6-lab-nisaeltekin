@@ -3,8 +3,11 @@
  * Tarih: [26/11/2025]
  * Aciklama: Gorev 2 - Sinema Bileti
 
-   import java.util.Scanner;
+import java.util.Scanner;
+
 public class SinemaBileti {
+
+    // Gün hafta sonu mu? (6=Cmt, 7=Paz)
     public static boolean isWeekend(int gun) {
         if (gun < 1 || gun > 7) {
             System.out.println("Geçersiz gün! 1-7 arasında olmalı.");
@@ -13,6 +16,7 @@ public class SinemaBileti {
         return gun == 6 || gun == 7;
     }
 
+    // Seans matine mi? (08:00–23:00 arası)
     public static boolean isMatinee(int saat) {
         if (saat < 8 || saat > 23) {
             System.out.println("Geçersiz saat! Saat 8 ile 23 arasında olmalıdır.");
@@ -25,6 +29,7 @@ public class SinemaBileti {
         }
     }
 
+    // Temel bilet fiyatı hesaplama
     public static double calculateBasePrice(int gun, int saat) {
         boolean haftasonu = isWeekend(gun);
         boolean matinee = isMatinee(saat);
@@ -38,13 +43,10 @@ public class SinemaBileti {
         return 85;                      // Hafta sonu normal
     }
 
+    // İndirim oranı hesaplama
     public static double calculateDiscount(int yas, int meslek, int gun) {
-
-        // 65 yaş üstü
-        if (yas >= 65) return 0.30;
-
-        // 12 yaş altı
-        if (yas < 12) return 0.25;
+        if (yas >= 65) return 0.30;   // 65 yaş üstü
+        if (yas < 12) return 0.25;    // 12 yaş altı
 
         if (meslek < 1 || meslek > 3) {
             System.out.println("Geçersiz meslek kodu! Meslek 1, 2 veya 3 olmalıdır.");
@@ -66,8 +68,8 @@ public class SinemaBileti {
         }
     }
 
+    // Film formatına göre ek ücret
     public static double getFormatExtra(int filmTuru) {
-
         if (filmTuru < 1 || filmTuru > 4) {
             System.out.println("Geçersiz film türü! 1–4 arasında bir değer girilmelidir.");
             return 0; // Hatalı türde ek ücret uygulanmaz
@@ -85,18 +87,19 @@ public class SinemaBileti {
                 return 0;
         }
     }
-    public static double calculateFinalPrice(int gun, int saat, int yas, int meslek, int filmTuru) {
 
+    // Toplam fiyat hesaplama
+    public static double calculateFinalPrice(int gun, int saat, int yas, int meslek, int filmTuru) {
         double temelFiyat = calculateBasePrice(gun, saat);
         double indirimOrani = calculateDiscount(yas, meslek, gun);
         double indirimTutari = temelFiyat * indirimOrani;
         double indirimliFiyat = temelFiyat - indirimTutari;
         double ekUcret = getFormatExtra(filmTuru);
-
         return indirimliFiyat + ekUcret;
     }
-    public static String generateTicketInfo(int gun, int saat, int yas, int meslek, int filmTuru) {
 
+    // Bilet bilgisi raporu oluşturma
+    public static String generateTicketInfo(int gun, int saat, int yas, int meslek, int filmTuru) {
         double temelFiyat = calculateBasePrice(gun, saat);
         double indirimOrani = calculateDiscount(yas, meslek, gun);
         double indirimTutari = temelFiyat * indirimOrani;
@@ -114,7 +117,8 @@ public class SinemaBileti {
 
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
-
+        
+        // Kullanıcıdan girişler alınıyor
         System.out.print("Gün Seç (1=Pzt ... 7=Paz): ");
         int gun = sc.nextInt();
 
@@ -129,9 +133,11 @@ public class SinemaBileti {
 
         System.out.print("Film Türü (1=2D, 2=3D, 3=IMAX, 4=4DX): ");
         int filmTuru = sc.nextInt();
-
+        
+        // Bilet bilgisi ekrana yazdırılıyor
         System.out.println(generateTicketInfo(gun, saat, yas, meslek, filmTuru));
     }
 
 }
+
 
